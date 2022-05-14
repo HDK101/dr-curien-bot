@@ -1,26 +1,27 @@
-# This example requires the 'message_content' privileged intents
-
-import os
 import discord
-from discord.ext import commands
+import time
+import os
 
+client = discord.Client()
 
-intents = discord.Intents.default()
-intents.message_content = True
-bot = commands.Bot(command_prefix='!', intents=intents)
-
-
-@bot.event
+@client.event
 async def on_ready():
-    print(f"Logged in as {bot.user}")
+    print('We have logged in as {0.user}'.format(client))
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send('pong')
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
 
-@bot.command()
-async def hello(ctx):
-    await ctx.send("Choo choo! 🚅")
+    if message.content == 'Curien!':
+        await message.channel.send('I must compliment you.')
+        time.sleep(3)
+        await message.channel.send("I didn't think you could make this far")
+        time.sleep(3)
+        await message.channel.send("However, this is it!")
+        time.sleep(3)
+        await message.channel.send("Let's see how good you really are!")
+        time.sleep(3)
+        await message.channel.send("https://youtu.be/AH636zGQm5Q?t=18")
 
-
-bot.run(os.environ["DISCORD_TOKEN"])
+client.run(os.environ["DISCORD_TOKEN"])
